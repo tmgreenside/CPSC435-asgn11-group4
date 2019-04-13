@@ -68,12 +68,12 @@ public class TermPairCount
             concepts = sorter.quicksort(concepts);
             
             // Loop and add each concept and pairs of concepts to the output collector
-            for (int i = 0; i < A.size(); i++) {
+            for (int i = 0; i < concepts.size(); i++) {
                 Integer c_i = concepts.get(i);
                 
                 output.collect(new IntArrayWritable(c_i), one);
                 
-                for (int j = i; j < A.size(); j++) {
+                for (int j = i; j < concepts.size(); j++) {
                     output.collect(new IntArrayWritable(c_i, c_j), one);
                 }
             }
