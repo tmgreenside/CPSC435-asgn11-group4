@@ -35,15 +35,16 @@ public class TermPairCount
     14: end method
     */
 
-    public static class Map extends MapReduceBase implements Mapper<LongWritable, Text, IntArrayWritable, IntWritable>
+    public static class Map extends MapReduceBase implements Mapper<LongWritable, Text, Text, IntWritable>
     {
         private final static IntWritable one = new IntWritable(1);
         private QuickSort sorter = new QuickSort();
+        private Text outKey = new Text();
 
         public void map(
             LongWritable docId, /* document id */
             Text document, /* document text */
-            OutputCollector<IntArrayWritable, IntWritable> output, /* output <K,V> collector to our reducer */
+            OutputCollector<Text, IntWritable> output, /* output <K,V> collector to our reducer */
             Reporter reporter)
         throws IOException
         {
@@ -70,24 +71,27 @@ public class TermPairCount
             // Loop and add each concept and pairs of concepts to the output collector
             for (int i = 0; i < concepts.size(); i++) {
                 Integer c_i = concepts.get(i);
-
-                output.collect(new IntArrayWritable(c_i), one);
+                
+                outKey.set(Integer.toString(c_i));
+                output.collect(outKey, one);
 
                 for (int j = i; j < concepts.size(); j++) {
                     Integer c_j = concepts.get(j);
-                    output.collect(new IntArrayWritable(c_i, c_j), one);
+                    
+                    outKey.set(Integer.toString(c_i) + "," + Integer.toString(c_j));
+                    output.collect(outKey, one);
                 }
             }
         }
     }
 
-    public static class Reduce extends MapReduceBase implements Reducer<IntArrayWritable, IntWritable, IntArrayWritable, IntWritable>
+    public static class Reduce extends MapReduceBase implements Reducer<Text, IntWritable, Text, IntWritable>
     {
 
         public void reduce(
-            IntArrayWritable key, /* key from our mapper */
+            Text key, /* key from our mapper */
             Iterator<IntWritable> values, /* values from our mapper */
-            OutputCollector<IntArrayWritable, IntWritable> output, /* output collector <K,V> to file output */
+            OutputCollector<Text, IntWritable> output, /* output collector <K,V> to file output */
             Reporter reporter)
         throws IOException
         {
@@ -100,54 +104,6 @@ public class TermPairCount
         }
     }
 
-    public static class IntArrayWritable extends ArrayWritable {
-
-        /**
-         * Create empty IntArrayWritable
-         */
-        public IntArrayWritable() {
-            super(IntWritable.class);
-        }
-
-        @Override
-        public IntWritable[] get() {
-            return (IntWritable[]) super.get();
-        }
-
-        /**
-         * Create IntArrayWritable from Integer array.
-         */
-        public IntArrayWritable(Integer[] values) {
-            super(IntWritable.class);
-            IntWritable[] writableValues = new IntWritable[values.length];
-            for (int i = 0; i < values.length; i++) {
-                writableValues[i] = new IntWritable(values[i]);
-            }
-            set(writableValues);
-        }
-
-        /**
-         * Create single-element IntArrayWritable.
-         */
-        public IntArrayWritable(Integer value) {
-            super(IntWritable.class);
-            IntWritable[] writableValues = new IntWritable[1];
-            writableValues[0] = new IntWritable(value);
-            set(writableValues);
-        }
-
-        /**
-         * Create two-element IntArrayWritable.
-         */
-        public IntArrayWritable(Integer value1, Integer value2) {
-            super(IntWritable.class);
-            IntWritable[] writableValues = new IntWritable[2];
-            writableValues[0] = new IntWritable(value1);
-            writableValues[1] = new IntWritable(value2);
-            set(writableValues);
-        }
-    }
-
     public static void main(String[] args) throws Exception
     {
         JobConf conf = new JobConf(TermPairCount.class);
@@ -155,7 +111,7 @@ public class TermPairCount
         conf.setJobName("termpaircount");
 
         // Set input/output parameters
-        conf.setOutputKeyClass(IntArrayWritable.class);
+        conf.setOutputKeyClass(Text.class);
         conf.setOutputValueClass(IntWritable.class);
 
         // Set Classes
