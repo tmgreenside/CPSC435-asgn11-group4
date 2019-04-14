@@ -60,7 +60,7 @@ public class TermPairCount
 
                 try {
                     conceptSet.add(Integer.parseInt(conceptStr));
-                } catch (NumberFormatException e) continue;
+                } catch (NumberFormatException e) { continue; }
             }
 
             // Convert conceptSet to ArrayList and sort
