@@ -14,7 +14,7 @@ else
     javac -classpath /share/hadoop-common-2.5.1.jar:/share/hadoop-mapreduce-client-core2.5.1.jar -d $classDirectory $filename
 fi
 
-jar -cvf $jarFile -C $classDirectory .
+jar cvf $jarFile -C $classDirectory .
 
 if ["$testPlatform" == "Amazon"] then
     /usr/bin/hadoop fs -mkdir /user/"$classname"
