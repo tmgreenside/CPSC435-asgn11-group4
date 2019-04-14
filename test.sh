@@ -5,7 +5,7 @@ jarFile="termpaircount.jar"
 classDirectory="termpaircount_classes"
 testPlatform="Amazon"
 
-rm -r $classDirectory
+rm -rf $classDirectory
 mkdir $classDirectory
 
 if ["$testPlatform" == "Amazon"] then
