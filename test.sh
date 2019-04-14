@@ -11,9 +11,9 @@ mkdir $classDirectory
 
 if ["$testPlatform" == "Amazon"]
 then
-    javac -classpath /usr/lib/hadoop/client/hadoop-common-2.8.5-amzn-3.jar:/usr/lib/hadoopmapreduce/hadoop-mapreduce-client-core-2.8.5-amzn-3.jar -d $classDirectory $filename
+    javac -classpath /usr/lib/hadoop/client/hadoop-common-2.8.5-amzn-3.jar:/usr/lib/hadoopmapreduce/hadoop-mapreduce-client-core-2.8.5-amzn-3.jar -d $classDirectory $filename QuickSort.java
 else
-    javac -classpath /share/hadoop-common-2.5.1.jar:/share/hadoop-mapreduce-client-core2.5.1.jar -d $classDirectory $filename
+    javac -classpath /share/hadoop-common-2.5.1.jar:/share/hadoop-mapreduce-client-core2.5.1.jar -d $classDirectory $filename QuickSort.java
 fi
 
 jar cvf $jarFile -C $classDirectory .
