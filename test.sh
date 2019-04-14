@@ -1,5 +1,5 @@
 #!/bin/bash
-tester="tgreenside"
+tester="tgreenside" # (use your own last name)
 filename="TermPairCount.java"
 classname="TermPairCount"
 jarFile="termpaircount.jar"
@@ -26,7 +26,7 @@ then
     /usr/bin/hadoop jar $jarFile $classname /user/"$classname"/input /user/"$classname"/output
     /usr/bin/hadoop fs -cat /user/"$classname"/output/part-00000
 else
-    hadoop fs -mkdir /user/"$tester" (use your own last name)
+    hadoop fs -mkdir /user/"$tester"
     hadoop fs -mkdir /user/"$tester"/termpaircount
     hadoop fs -mkdir /user/"$tester"/termpaircount/input
     hadoop fs -copyFromLocal ./input/*.txt /user/"$tester"/termpaircount/input
