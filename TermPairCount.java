@@ -74,13 +74,14 @@ public class TermPairCount
                 output.collect(new IntArrayWritable(c_i), one);
 
                 for (int j = i; j < concepts.size(); j++) {
+                    Integer c_j = concepts.get(j);
                     output.collect(new IntArrayWritable(c_i, c_j), one);
                 }
             }
         }
     }
 
-    public static class Reduce extends MapReduceBase implements Reducer<Text, IntWritable, IntArrayWritable, IntWritable>
+    public static class Reduce extends MapReduceBase implements Reducer<IntArrayWritable, IntWritable, IntArrayWritable, IntWritable>
     {
 
         public void reduce(
