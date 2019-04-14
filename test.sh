@@ -9,7 +9,7 @@ testPlatform="Amazon"
 rm -rf $classDirectory
 mkdir $classDirectory
 
-if ["$testPlatform" == "Amazon"]
+if [ "$testPlatform" == "Amazon" ]
 then
     javac -classpath /usr/lib/hadoop/client/hadoop-common-2.8.5-amzn-3.jar:/usr/lib/hadoop-mapreduce/hadoop-mapreduce-client-core-2.8.5-amzn-3.jar -d $classDirectory $filename QuickSort.java
 else
@@ -18,7 +18,7 @@ fi
 
 jar cvf $jarFile -C $classDirectory .
 
-if ["$testPlatform" == "Amazon"]
+if [ "$testPlatform" == "Amazon" ]
 then
     /usr/bin/hadoop fs -mkdir /user/"$classname"
     /usr/bin/hadoop fs -mkdir /user/"$classname"/input
